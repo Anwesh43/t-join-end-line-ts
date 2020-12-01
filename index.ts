@@ -28,3 +28,42 @@ class ScaleUtil {
         return Math.sin(scale * Math.PI)
     } 
 }
+
+class DrawingUtil {
+
+    static drawLine(context : CanvasRenderingContext2D, x1 : number, y1 : number, x2 : number, y2 : number) {
+        context.beginPath()
+        context.moveTo(x1, y1)
+        context.lineTo(x2, y2)
+        context.stroke()
+    }
+
+    static drawTJoinEndLine(context : CanvasRenderingContext2D, scale : number) {
+        const size : number = Math.min(w, h) / sizeFactor 
+        const sf : number = ScaleUtil.sinify(scale)
+        const sf1 : number = ScaleUtil.divideScale(sf, 0, parts)
+        const sf2 : number = ScaleUtil.divideScale(sf, 1, parts)
+        const sf3 : number = ScaleUtil.divideScale(sf, 2, parts)
+        const sf4 : number = ScaleUtil.divideScale(sf, 3, parts)
+        context.save()
+        context.translate(w / 2, h / 2)
+        context.rotate(Math.PI / 2)
+        DrawingUtil.drawLine(context, 0, size, 0, size - 2 * size * sf1)
+        DrawingUtil.drawLine(context, -size * 0.5 * sf2, -size, size * 0.5 * sf2, -size)
+        for (var j = 0; j < 2; j++) {
+            const ix : number = size * (1 - 2 * j)
+            const fx : number = 0
+            const iy : number = -size 
+            const fy : number = size
+            DrawingUtil.drawLine(context, ix, iy, ix + (fx - ix) * sf3, iy + (fy - iy) * sf3)
+        }
+        context.restore()
+    }
+    
+    static drawTJELNode(context : CanvasRenderingContext2D, i : number, scale : number) {
+        context.lineWidth = Math.min(w, h) / strokeFactor 
+        context.lineCap = 'round'
+        context.strokeStyle = colors[i]
+        DrawingUtil.drawTJoinEndLine(context, scale)
+    }
+}
