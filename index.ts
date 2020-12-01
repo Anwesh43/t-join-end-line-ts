@@ -4,7 +4,7 @@ const parts : number = 4
 const scGap : number = 0.02 / parts 
 const strokeFactor : number = 90 
 const sizeFactor : number = 4.7 
-const delay : number = 90 
+const delay : number = 20 
 const backColor : string = "#BDBDBD"
 const colors : Array<string> = [
     "#F44336",
@@ -47,11 +47,11 @@ class DrawingUtil {
         const sf4 : number = ScaleUtil.divideScale(sf, 3, parts)
         context.save()
         context.translate(w / 2, h / 2)
-        context.rotate(Math.PI / 2)
+        context.rotate(-sf4 * Math.PI / 2)
         DrawingUtil.drawLine(context, 0, size, 0, size - 2 * size * sf1)
         DrawingUtil.drawLine(context, -size * 0.5 * sf2, -size, size * 0.5 * sf2, -size)
         for (var j = 0; j < 2; j++) {
-            const ix : number = size * (1 - 2 * j)
+            const ix : number = size * (1 - 2 * j) * 0.5 
             const fx : number = 0
             const iy : number = -size 
             const fy : number = size
